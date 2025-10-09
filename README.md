@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # K.G.N Garments Gallery - Auto Grid Version
 
 ## How to use
@@ -14,3 +15,6 @@
 - README.md → instructions
 
 Enjoy your gallery!
+=======
+# kgn-gallery
+>>>>>>> cb265dde290f5782a65c3cfa5b84e933003d44c9
