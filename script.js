@@ -6,25 +6,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const next = document.getElementById('next');
   const prev = document.getElementById('prev');
 
-  // Allowed image extensions
-  const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+  // Supported extensions
+  const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'JPG', 'JPEG', 'PNG', 'GIF', 'WEBP'];
 
-  // Automatically load all images in the /photos folder
-  // IMPORTANT: For static hosting like Netlify, we need a fixed list
-  // So we generate it manually at build time OR use a helper like this:
+  // Adjust this to the number of photos you have (e.g. 47)
+  const totalImages = 100;
   const images = [];
 
-  // Replace "photos" folder contents manually here if needed, or keep the filenames consistent
-  for (let i = 1; i <= 100; i++) { // Adjust max number if needed
-    allowedExtensions.forEach(ext => {
-      const filename = `photos/photo${i}.${ext}`;
+  for (let i = 1; i <= totalImages; i++) {
+    for (const ext of allowedExtensions) {
       const img = document.createElement('img');
-      img.src = filename;
+      img.src = `photos/${i}.${ext}`;
       img.alt = `Photo ${i}`;
-      img.onerror = () => img.remove(); // Remove if file doesn't exist
+      img.onerror = () => img.remove(); // Removes if file doesn’t exist
       gallery.appendChild(img);
       images.push(img);
-    });
+    }
   }
 
   let currentIndex = 0;
@@ -32,26 +29,29 @@ document.addEventListener('DOMContentLoaded', () => {
   // Open lightbox
   gallery.addEventListener('click', (e) => {
     if (e.target.tagName === 'IMG') {
-      currentIndex = images.indexOf(e.target);
-      if (currentIndex !== -1) {
-        lightboxImg.src = e.target.src;
-        lightbox.classList.remove('hidden');
-      }
+      const allImgs = [...gallery.querySelectorAll('img')];
+      currentIndex = allImgs.indexOf(e.target);
+      lightboxImg.src = e.target.src;
+      lightbox.classList.remove('hidden');
     }
   });
 
   // Close lightbox
   close.addEventListener('click', () => lightbox.classList.add('hidden'));
-  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.add('hidden'); });
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) lightbox.classList.add('hidden');
+  });
 
   // Next / Prev buttons
   next.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % images.length;
-    lightboxImg.src = images[currentIndex].src;
+    const allImgs = [...gallery.querySelectorAll('img')];
+    currentIndex = (currentIndex + 1) % allImgs.length;
+    lightboxImg.src = allImgs[currentIndex].src;
   });
 
   prev.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + images.length) % images.length;
-    lightboxImg.src = images[currentIndex].src;
+    const allImgs = [...gallery.querySelectorAll('img')];
+    currentIndex = (currentIndex - 1 + allImgs.length) % allImgs.length;
+    lightboxImg.src = allImgs[currentIndex].src;
   });
 });
