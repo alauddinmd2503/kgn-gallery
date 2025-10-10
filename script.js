@@ -1,26 +1,12 @@
+// Automatically display all images from the "photos" folder
 const gallery = document.getElementById('gallery');
-fetch('photos/')
-  .then(resp => resp.text())
-  .then(text => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(text,'text/html');
-    const links = Array.from(doc.querySelectorAll('a'));
-    const images = links.map(a=>a.getAttribute('href')).filter(h => h.match(/\.(jpe?g|png|webp|gif)$/i));
-    if(images.length===0){
-      const msg = document.createElement('p');
-      msg.textContent = 'No images found. Add your images to the /photos folder.';
-      gallery.appendChild(msg);
-    } else {
-      images.forEach(src=>{
-        const img = document.createElement('img');
-        img.src='photos/'+src;
-        img.alt=src;
-        gallery.appendChild(img);
-      });
-    }
-  })
-  .catch(err=>{
-    const msg = document.createElement('p');
-    msg.textContent = 'Error loading images.';
-    gallery.appendChild(msg);
-  });
+
+// Replace this number with your total number of images if needed
+const totalImages = 47;
+
+for (let i = 1; i <= totalImages; i++) {
+  const img = document.createElement('img');
+  img.src = `photos/Latest_Sample_PDF_page-${String(i).padStart(4, '0')}.jpg`;
+  img.alt = `Photo ${i}`;
+  gallery.appendChild(img);
+}
